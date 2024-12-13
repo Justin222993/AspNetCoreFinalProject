@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Artwork Details";
+}
+
+@model WebApplication3.Models.Artwork
+
+<div class="mb-3">
+    <a href="@Url.Action("Index", "Home", new { tab = "artworks" })" class="btn btn-secondary" style="margin-left: -10px;">Back</a>
+</div>
+
+<h1>@Model.Title</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <img src="@Model.ImageUrl" alt="@Model.Title" class="img-fluid" style="width: 100%; height: 100%; object-fit: contain;" />
+    </div>
+    <div class="col-md-6">
+        <h4>Description</h4>
+        <p>@Model.Description</p>
+
+        <p><strong>Price:</strong> $@Model.Price</p>
+        <p><strong>Medium:</strong> @Model.Medium</p>
+        <p><strong>Size:</strong> @Model.Size</p>
+
+        <h5>Artist Information</h5>
+        <p><strong>Artist:</strong> <a href="@Url.Action("Details", "Artist", new { id = Model.ArtistId })">@Model.Artist.FullName</a></p>
+
+        @if (User.IsInRole("Buyer"))
+        {
+            <a href="@Url.Action("AddToCart", "Buyer", new { id = Model.Id })" class="btn btn-success">Add to Cart</a>
+        }
+    </div>
+</div>

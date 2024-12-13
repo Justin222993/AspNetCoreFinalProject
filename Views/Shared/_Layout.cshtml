@@ -1,0 +1,217 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Virtual Art Gallery</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WebApplication3.styles.css" asp-append-version="true" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+
+    <style>
+
+        .form-control-sm {
+            background-color: black;
+            color: white;
+            border: 1px solid #444;
+        }
+
+            .form-control-sm:focus {
+                background-color: #333;
+                color: white;
+                border-color: #666;
+            }
+
+        textarea.form-control-sm {
+            background-color: black;
+            color: white;
+            border: 1px solid #444;
+        }
+
+            textarea.form-control-sm:focus {
+                background-color: #333;
+                color: white;
+                border-color: #666;
+            }
+
+        button.btn-sm {
+            background-color: black;
+            color: white;
+            border: 1px solid #444;
+        }
+
+            button.btn-sm:hover {
+                background-color: #333;
+                color: white;
+                border-color: #666;
+            }
+
+        label {
+            color: white;
+        }
+
+        body {
+            background-color: #000000;
+            color: white;
+            padding-bottom: 100px;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background-color: #000000 !important;
+        }
+
+            .navbar .navbar-nav .nav-link {
+                color: white;
+            }
+
+                .navbar .navbar-nav .nav-link:hover {
+                    color: #ccc;
+                }
+
+            .navbar .navbar-nav .nav-item.active .nav-link {
+                color: #ccc;
+            }
+
+        .btn {
+            background-color: #000;
+            border: 2px solid #ccc;
+            color: white;
+        }
+
+            .btn:hover {
+                background-color: #333;
+                border-color: #bbb;
+            }
+
+        .nav-pills .nav-link {
+            background-color: #000;
+            border: 2px solid #ccc;
+            color: white;
+            margin-right: 10px;
+        }
+
+            .nav-pills .nav-link.active {
+                background-color: #333;
+                border-color: #bbb;
+            }
+
+            .nav-pills .nav-link:hover {
+                background-color: #333;
+                border-color: #bbb;
+            }
+
+        .card-img-top {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .card {
+            margin-bottom: 30px;
+        }
+
+        footer {
+            background-color: #000000;
+            color: white;
+        }
+    </style>
+</head>
+<body style="background-color: #000000; color: white;">
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Virtual Art Gallery</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                    </ul>
+
+                    <ul class="navbar-nav ms-auto">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            @if (User.IsInRole("Buyer"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-controller="Buyer" asp-action="MyPurchases">Purchases</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-controller="Buyer" asp-action="Cart">Cart</a>
+                                </li>
+
+                                var currentUser = await UserManager.GetUserAsync(User);
+                                var fullName = currentUser?.FullName ?? User.Identity.Name;
+
+                                <li class="nav-item">
+                                    <p class="nav-link text-white">@fullName</p>
+                                </li>
+                            }
+                            @if (User.IsInRole("Artist"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-controller="Artist" asp-action="Profile">My Profile</a>
+                                </li>
+                            }
+
+                            @if (User.IsInRole("Artist"))
+                            {
+                                var currentUser = await UserManager.GetUserAsync(User);
+                                var fullName = currentUser?.FullName ?? User.Identity.Name;
+
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-controller="Artist" asp-action="Profile">@fullName</a>
+                                </li>
+                            }
+                            <li class="nav-item">
+                                <form method="post" asp-controller="Account" asp-action="Logout" class="form-inline">
+                                    <button type="submit" class="btn btn-outline-light">Logout</button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted" style="background-color: #000000; color: white;">
+        <div class="container">
+            &copy; @DateTime.Now.Year - Virtual Art Gallery
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,30 @@
+﻿@model WebApplication3.Models.Exhibition
+
+@{
+    ViewData["Title"] = "Exhibition Details";
+}
+
+<div class="mb-3">
+    <a href="@Url.Action("Index", "Home", new { tab = "exhibitions" })" class="btn btn-secondary" style="margin-left: -10px;">Back</a>
+</div>
+
+<h1>@Model.Title</h1>
+<img src="@Model.FloorPlanUrl" alt="@Model.Title" class="exhibition-image-container" style="width: 100%; height: auto;" />
+<p><strong>Exhibition Dates:</strong> @Model.StartDate.ToString("MMMM dd, yyyy") - @Model.EndDate.ToString("MMMM dd, yyyy")</p>
+
+<h3>Artworks in this Exhibition</h3>
+<div class="row">
+    @foreach (var artwork in Model.Artworks)
+    {
+        <div class="col-md-4">
+            <div class="card" style="background-color: #000000; border: 1px solid #ccc; color: white;">
+                <img src="@artwork.ImageUrl" class="card-img-top" alt="@artwork.Title">
+                <div class="card-body">
+                    <h5 class="card-title">@artwork.Title</h5>
+                    <p class="card-text">@artwork.Description</p>
+                    <a href="@Url.Action("Details", "Artwork", new { id = artwork.Id })" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

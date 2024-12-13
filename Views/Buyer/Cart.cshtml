@@ -1,0 +1,58 @@
+﻿@model WebApplication3.Models.Order
+
+<h1 class="text-white">Your Cart</h1>
+
+@if (Model == null || !Model.Artworks.Any())
+{
+    <p class="text-white">Your cart is empty.</p>
+}
+else
+{
+    <table class="table text-white">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var artwork in Model.Artworks)
+            {
+                <tr>
+                    <td>@artwork.Title</td>
+                    <td>$@artwork.Price</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <p class="text-white"><strong>Total:</strong> $@Model.TotalPrice</p>
+
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#checkoutModal">Checkout</button>
+
+    <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content text-white" style="background-color: #000000; border: 2px solid white; border-radius: 10px;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="checkoutModalLabel">Enter Bank Account Info</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="checkoutForm" method="post" asp-action="Checkout">
+                        <div class="mb-3">
+                            <label for="accountNumber" class="form-label text-white">Account Number</label>
+                            <input type="text" class="form-control" id="accountNumber" name="AccountNumber" required style="background-color: #000000; color: white; border: 1px solid white;">
+                        </div>
+                        <div class="mb-3">
+                            <label for="accountHolder" class="form-label text-white">Account Holder</label>
+                            <input type="text" class="form-control" id="accountHolder" name="AccountHolder" required style="background-color: #000000; color: white; border: 1px solid white;">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Purchase</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,44 @@
+﻿@model WebApplication3.ViewModels.ArtistProfileViewModel
+
+@{
+    ViewData["Title"] = "Artist Profile";
+}
+
+<a href="@Url.Action("Index", "Home")" class="btn btn-secondary mt-4">Back to Home</a>
+<br />
+<br />
+<br />
+<h2>My Profile</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <img src="@Model.ProfileImageUrl" alt="Profile Image" class="img-fluid rounded-circle" style="max-width: 200px;">
+    </div>
+    <div class="col-md-8">
+        <h3>@Model.FullName</h3>
+        <p><strong>Bio:</strong> @Model.Bio</p>
+
+        <h4>Your Artworks</h4>
+        @if (Model.Artworks.Any())
+        {
+            <ul>
+                @foreach (var artwork in Model.Artworks)
+                {
+                    <li>
+                        <h5>@artwork.Title</h5>
+                        <p>@artwork.Description</p>
+                        <img src="@artwork.ImageUrl" alt="@artwork.Title" class="img-fluid" style="max-width: 150px;">
+                    </li>
+                }
+            </ul>
+            <a asp-action="AddArtworkForm" class="btn btn-primary">Add Artwork</a>
+        }
+        else
+        {
+            <p>No artworks to display.</p>
+            <a asp-action="AddArtworkForm" class="btn btn-primary">Add Artwork</a>
+        }
+
+        <a asp-action="CreateExhibition" class="btn btn-primary">Create Exhibition</a>
+    </div>
+</div>

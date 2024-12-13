@@ -1,0 +1,35 @@
+﻿@model WebApplication3.Models.Exhibition
+
+<h2>Create New Exhibition</h2>
+
+<form asp-action="CreateExhibition" method="post" enctype="multipart/form-data">
+    <div class="form-group mb-4">
+        <label for="Title">Title</label>
+        <input type="text" class="form-control form-control-sm" id="Title" name="Title" value="@Model.Title" />
+    </div>
+    <div class="form-group mb-4">
+        <label for="StartDate">Start Date</label>
+        <input type="date" class="form-control form-control-sm" id="StartDate" name="StartDate" value="@Model.StartDate.ToString("yyyy-MM-dd")" />
+    </div>
+    <div class="form-group mb-4">
+        <label for="EndDate">End Date</label>
+        <input type="date" class="form-control form-control-sm" id="EndDate" name="EndDate" value="@Model.EndDate.ToString("yyyy-MM-dd")" />
+    </div>
+    <div class="form-group mb-4">
+        <label for="FloorPlanUrl">Floor Plan URL</label>
+        <input type="text" class="form-control form-control-sm" id="FloorPlanUrl" name="FloorPlanUrl" value="@Model.FloorPlanUrl" />
+    </div>
+
+    <div class="form-group mb-4">
+        <label>Select Artworks</label>
+        @foreach (var artwork in Model.Artworks)
+        {
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="Artwork_@artwork.Id" name="Artworks" value="@artwork.Id" />
+                <label class="form-check-label" for="Artwork_@artwork.Id">@artwork.Title</label>
+            </div>
+        }
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-sm">Create Exhibition</button>
+</form>

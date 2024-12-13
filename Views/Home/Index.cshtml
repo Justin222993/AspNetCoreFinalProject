@@ -1,0 +1,116 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@model WebApplication3.ViewModels.HomeViewModel
+
+<div class="container mt-5">
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link text-white" id="pills-artworks-tab" data-bs-toggle="pill" href="#pills-artworks" role="tab" aria-controls="pills-artworks" aria-selected="false">Featured Artworks</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link text-white" id="pills-artists-tab" data-bs-toggle="pill" href="#pills-artists" role="tab" aria-controls="pills-artists" aria-selected="false">Artists</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link text-white" id="pills-exhibitions-tab" data-bs-toggle="pill" href="#pills-exhibitions" role="tab" aria-controls="pills-exhibitions" aria-selected="false">Exhibitions</a>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="pills-tabContent">
+        <!-- Featured Artworks -->
+        <div class="tab-pane fade show active" id="pills-artworks" role="tabpanel" aria-labelledby="pills-artworks-tab">
+            <h3 class="text-white">Featured Artworks</h3>
+            <div class="row">
+                @foreach (var artwork in Model.Artworks)
+                {
+                    <div class="col-md-4">
+                        <div class="card" style="background-color: #000000; border: 1px solid #ccc; color: white;">
+                            <img src="@artwork.ImageUrl" class="card-img-top" alt="@artwork.Title">
+                            <div class="card-body">
+                                <h5 class="card-title text-white">@artwork.Title</h5>
+                                <p class="card-text text-white">@artwork.Description</p>
+                                <a href="@Url.Action("Details", "Artwork", new { id = artwork.Id })" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Artists -->
+        <div class="tab-pane fade" id="pills-artists" role="tabpanel" aria-labelledby="pills-artists-tab">
+            <h3 class="text-white">Artists</h3>
+            <div class="row">
+                @foreach (var artist in Model.Artists)
+                {
+                    <div class="col-md-4">
+                        <div class="card" style="background-color: #000000; border: 1px solid #ccc; color: white;">
+                            <img src="@artist.ProfileImageUrl" class="card-img-top" alt="@artist.FullName">
+                            <div class="card-body">
+                                <h5 class="card-title text-white">@artist.FullName</h5>
+                                <p class="card-text text-white">@artist.Bio</p>
+                                <a href="@Url.Action("Details", "Artist", new { id = artist.Id })" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Exhibitions -->
+        <div class="tab-pane fade" id="pills-exhibitions" role="tabpanel" aria-labelledby="pills-exhibitions-tab">
+            <h3 class="text-white">Exhibitions</h3>
+            <div class="row">
+                @foreach (var exhibition in Model.Exhibitions)
+                {
+                    <div class="col-md-4">
+                        <div class="card" style="background-color: #000000; border: 1px solid #ccc; color: white;">
+                            <img src="@exhibition.FloorPlanUrl" class="card-img-top" alt="@exhibition.Title">
+                            <div class="card-body">
+                                <h5 class="card-title text-white">@exhibition.Title</h5>
+                                <p class="card-text text-white">@exhibition.StartDate.ToString("MMMM dd, yyyy") - @exhibition.EndDate.ToString("MMMM dd, yyyy")</p>
+                                <a href="@Url.Action("Details", "Exhibition", new { id = exhibition.Id })" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const activeTab = urlParams.get('tab');
+
+    if (activeTab) {
+        const tabLink = document.querySelector(`#pills-${activeTab}-tab`);
+        const tabPane = document.querySelector(`#pills-${activeTab}`);
+
+        if (tabLink && tabPane) {
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('show', 'active'));
+
+            tabLink.classList.add('active');
+            tabPane.classList.add('show', 'active');
+        }
+    } else {
+        setDefaultTab();
+    }
+
+    function setDefaultTab() {
+        document.querySelector('#pills-artworks-tab').classList.add('active');
+        document.querySelector('#pills-artworks').classList.add('show', 'active');
+    }
+
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', function () {
+            const newTab = this.getAttribute('href').replace('#pills-', '');
+            const currentUrl = new URL(window.location.href);
+
+            currentUrl.searchParams.set('tab', newTab);
+            window.history.replaceState({}, '', currentUrl);
+        });
+    });
+</script>

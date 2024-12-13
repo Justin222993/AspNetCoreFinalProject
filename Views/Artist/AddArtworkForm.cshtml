@@ -1,0 +1,41 @@
+﻿@model WebApplication3.Models.Artwork
+
+@{
+    ViewData["Title"] = "Add Artwork";
+}
+
+<h2>Add Artwork</h2>
+
+<form asp-action="AddArtwork" method="post">
+    <div class="form-group mb-4">
+        <label asp-for="Title"></label>
+        <input asp-for="Title" class="form-control form-control-sm" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="form-group mb-4">
+        <label asp-for="Medium"></label>
+        <input asp-for="Medium" class="form-control form-control-sm" />
+        <span asp-validation-for="Medium" class="text-danger"></span>
+    </div>
+    <div class="form-group mb-4">
+        <label asp-for="Size"></label>
+        <input asp-for="Size" class="form-control form-control-sm" />
+        <span asp-validation-for="Size" class="text-danger"></span>
+    </div>
+    <div class="form-group mb-4">
+        <label asp-for="Price"></label>
+        <input asp-for="Price" type="number" step="0.01" class="form-control form-control-sm" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+    <div class="form-group mb-4">
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description" class="form-control form-control-sm"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="form-group mb-4">
+        <label asp-for="ImageUrl"></label>
+        <input asp-for="ImageUrl" class="form-control form-control-sm" />
+        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-success btn-sm">Add Artwork</button>
+</form>

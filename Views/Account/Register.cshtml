@@ -1,0 +1,87 @@
+﻿@model WebApplication3.ViewModels.RegisterViewModel
+
+<h2>Register</h2>
+
+<form asp-action="Register" method="post">
+    <div class="form-group mb-4">
+        <label asp-for="Role"></label>
+        <select asp-for="Role" class="form-control form-control-sm">
+            <option value="Buyer">Buyer</option>
+            <option value="Artist">Artist</option>
+        </select>
+        <span asp-validation-for="Role" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-4">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control form-control-sm" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-4">
+        <label asp-for="Password"></label>
+        <input asp-for="Password" type="password" class="form-control form-control-sm" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-4">
+        <label asp-for="ConfirmPassword"></label>
+        <input asp-for="ConfirmPassword" type="password" class="form-control form-control-sm" />
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-4">
+        <label asp-for="FullName"></label>
+        <input asp-for="FullName" class="form-control form-control-sm" />
+        <span asp-validation-for="FullName" class="text-danger"></span>
+    </div>
+
+    <div id="artistFields" class="d-none">
+        <div class="form-group mb-4">
+            <label for="Bio">Bio</label>
+            <textarea class="form-control form-control-sm" id="Bio" name="Bio">An interesting bio</textarea>
+        </div>
+        <div class="form-group">
+            <label for="ProfileImageUrl">Profile Image URL</label>
+            <input type="text" class="form-control form-control-sm" id="ProfileImageUrl" name="ProfileImageUrl" value="yourImage.png" />
+        </div>
+    </div>
+
+
+    <br />
+    <br />
+
+    <button type="submit" class="btn btn-success btn-sm">Register</button>
+</form>
+
+@foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+{
+    <div class="alert alert-danger">@error.ErrorMessage</div>
+}
+
+<script>
+    document.getElementById('Role').addEventListener('change', function () {
+        var role = this.value;
+        var artistFields = document.getElementById('artistFields');
+
+        if (role === 'Artist') {
+            artistFields.classList.remove('d-none');
+        } else {
+            artistFields.classList.add('d-none');
+        }
+    });
+
+    if (document.getElementById('Role').value === 'Artist') {
+        document.getElementById('artistFields').classList.remove('d-none');
+    }
+
+    window.onload = function () {
+        var role = '@Model.Role';
+        var roleSelect = document.getElementById('Role');
+        if (role === 'Artist') {
+            roleSelect.value = 'Artist';
+        } else if (role === 'Buyer') {
+            roleSelect.value = 'Buyer';
+        }
+    };
+</script>
